@@ -1,0 +1,41 @@
+{
+  "name": "security-module-saas",
+  "version": "1.0.0",
+  "description": "Security module as a service for companies to use",
+  "main": "src/application.js",
+  "scripts": {
+    "start": "node src/application.js",
+    "dev": "nodemon src/application.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoMS97/security-module-saas.git"
+  },
+  "keywords": [
+    "saas",
+    "security",
+    "module"
+  ],
+  "author": "Gustavo Santos, Luiz Eduardo Oku & Alexandre Borges",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustavoMS97/security-module-saas/issues"
+  },
+  "homepage": "https://github.com/GustavoMS97/security-module-saas#readme",
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "joi": "17.2.1"
+  },
+  "devDependencies": {
+    "eslint": "7.8.1",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-mocha": "8.0.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "2.1.1"
+  }
+}

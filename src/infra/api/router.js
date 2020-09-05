@@ -1,0 +1,3 @@
+exports.routerFactory = ({} = {}) => {
+  return {};
+};
