@@ -12,6 +12,8 @@ const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewa
 const { createTokenForUserFactory } = require('./domain/services/create-user-token');
 const { loginUserWithEmailAndPasswordFactory } = require('./domain/services/login-user-with-email-password');
 const { loginUserRouteFactory } = require('./infra/api/routes/login-user');
+const { requestValidationMiddlewareFactory } = require('./infra/api/middlewares/request-validation');
+const { createHistoryFactory } = require('./domain/services/create-history');
 
 const application = async () => {
   try {
@@ -24,7 +26,10 @@ const application = async () => {
     const { User } = UserFactory({ mongooseConnection });
     const { History } = HistoryFactory({ mongooseConnection });
 
+    const { createHistory } = createHistoryFactory({ History });
+
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory({ ENV });
+    const { requestValidationMiddleware } = requestValidationMiddlewareFactory({ ENV, createHistory, User });
 
     const { createUserWithPermissions } = createUserWithPermissionsFactory({ User, Permission });
     const { createTokenForUser } = createTokenForUserFactory({ ENV });
@@ -35,7 +40,12 @@ const application = async () => {
 
     const { app } = await startApi();
 
-    const { apiRouter } = routerFactory({ createUserRoute, loginUserRoute, requestAuthenticationMiddleware });
+    const { apiRouter } = routerFactory({
+      createUserRoute,
+      loginUserRoute,
+      requestAuthenticationMiddleware,
+      requestValidationMiddleware,
+    });
 
     apiRouter({ app });
   } catch (applicationError) {

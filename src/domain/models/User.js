@@ -3,7 +3,7 @@
  */
 exports.UserFactory = ({ mongooseConnection } = {}) => {
   const UserSchema = new mongooseConnection.Schema({
-    login: { type: String, required: true },
+    login: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     permissions: [
       {

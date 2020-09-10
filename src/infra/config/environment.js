@@ -25,6 +25,7 @@ exports.loadEnvironment = () => {
       MONGO_DB_URL: joi.string().required(),
       AUTH_SECRET: joi.string().required(),
       TOKEN_EXPIRATION: joi.number().required(),
+      CLIENT_BASE_URL: joi.string().uri().required(),
     })
     .required()
     .validate(rawEnvVars);

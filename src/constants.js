@@ -1,1 +1,0 @@
-exports.METHODS = ['*', 'POST', 'GET'];

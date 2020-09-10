@@ -28,8 +28,7 @@ exports.requestAuthenticationMiddlewareFactory = ({ ENV } = {}) => {
           return next();
         })
         .catch((err) => {
-          console.log(err);
-          throw new Error('Erro ao validar token jwt');
+          next(err);
         });
     },
   };

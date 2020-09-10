@@ -1,5 +1,4 @@
 const joi = require('joi');
-const { METHODS } = require('../../../constants');
 
 exports.createUserRouteFactory = ({ createUserWithPermissions } = {}) => {
   return {
@@ -15,10 +14,6 @@ exports.createUserRouteFactory = ({ createUserWithPermissions } = {}) => {
               .items(
                 joi.object({
                   path: joi.string().required(),
-                  method: joi
-                    .string()
-                    .required()
-                    .valid(...METHODS),
                 }),
               )
               .required(),
