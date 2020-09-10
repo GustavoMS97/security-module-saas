@@ -8,26 +8,39 @@ const { HistoryFactory } = require('./domain/models/History');
 const { createUserRouteFactory } = require('./infra/api/routes/create-user');
 const { routerFactory } = require('./infra/api/router');
 const { createUserWithPermissionsFactory } = require('./domain/services/create-user-with-permissions');
+const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
+const { createTokenForUserFactory } = require('./domain/services/create-user-token');
+const { loginUserWithEmailAndPasswordFactory } = require('./domain/services/login-user-with-email-password');
+const { loginUserRouteFactory } = require('./infra/api/routes/login-user');
 
 const application = async () => {
-  const { ENV } = loadEnvironment();
+  try {
+    const { ENV } = loadEnvironment();
 
-  const { startApi } = apiFactory({ ENV });
-  const { mongooseConnection } = await connectToMongoose({ ENV });
+    const { startApi } = apiFactory({ ENV });
+    const { mongooseConnection } = await connectToMongoose({ ENV });
 
-  const { Permission } = PermissionFactory({ mongooseConnection });
-  const { User } = UserFactory({ mongooseConnection });
-  const { History } = HistoryFactory({ mongooseConnection });
+    const { Permission } = PermissionFactory({ mongooseConnection });
+    const { User } = UserFactory({ mongooseConnection });
+    const { History } = HistoryFactory({ mongooseConnection });
 
-  const { createUserWithPermissions } = createUserWithPermissionsFactory({ User, Permission });
+    const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory({ ENV });
 
-  const { createUserRoute } = createUserRouteFactory({ createUserWithPermissions });
+    const { createUserWithPermissions } = createUserWithPermissionsFactory({ User, Permission });
+    const { createTokenForUser } = createTokenForUserFactory({ ENV });
+    const { loginUserWithEmailAndPassword } = loginUserWithEmailAndPasswordFactory({ User, createTokenForUser });
 
-  const { app } = await startApi();
+    const { createUserRoute } = createUserRouteFactory({ createUserWithPermissions });
+    const { loginUserRoute } = loginUserRouteFactory({ loginUserWithEmailAndPassword });
 
-  const { apiRouter } = routerFactory({ requestValidationModule: undefined, createUserRoute });
+    const { app } = await startApi();
 
-  apiRouter({ app });
+    const { apiRouter } = routerFactory({ createUserRoute, loginUserRoute, requestAuthenticationMiddleware });
+
+    apiRouter({ app });
+  } catch (applicationError) {
+    console.log(applicationError);
+  }
 };
 
 application();

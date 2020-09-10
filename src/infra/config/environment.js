@@ -23,6 +23,8 @@ exports.loadEnvironment = () => {
       API_SERVER_PORT: joi.number().port().required(),
       API_SECRET_KEY: joi.string().required(),
       MONGO_DB_URL: joi.string().required(),
+      AUTH_SECRET: joi.string().required(),
+      TOKEN_EXPIRATION: joi.number().required(),
     })
     .required()
     .validate(rawEnvVars);
