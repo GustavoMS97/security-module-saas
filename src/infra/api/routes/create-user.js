@@ -20,7 +20,6 @@ exports.createUserRouteFactory = ({ createUserWithPermissions } = {}) => {
           })
           .required()
           .validate(req.body);
-
         if (envVarsValidationError) {
           throw envVarsValidationError;
         }

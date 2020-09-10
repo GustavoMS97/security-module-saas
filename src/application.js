@@ -5,15 +5,20 @@ const { connectToMongoose } = require('./infra/db/mongoose');
 const { PermissionFactory } = require('./domain/models/Permission');
 const { UserFactory } = require('./domain/models/User');
 const { HistoryFactory } = require('./domain/models/History');
-const { createUserRouteFactory } = require('./infra/api/routes/create-user');
-const { routerFactory } = require('./infra/api/router');
-const { createUserWithPermissionsFactory } = require('./domain/services/create-user-with-permissions');
+
+const { createHistoryFactory } = require('./domain/services/create-history');
+
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
+const { requestValidationMiddlewareFactory } = require('./infra/api/middlewares/request-validation');
+
+const { createUserWithPermissionsFactory } = require('./domain/services/create-user-with-permissions');
 const { createTokenForUserFactory } = require('./domain/services/create-user-token');
 const { loginUserWithEmailAndPasswordFactory } = require('./domain/services/login-user-with-email-password');
+
+const { createUserRouteFactory } = require('./infra/api/routes/create-user');
 const { loginUserRouteFactory } = require('./infra/api/routes/login-user');
-const { requestValidationMiddlewareFactory } = require('./infra/api/middlewares/request-validation');
-const { createHistoryFactory } = require('./domain/services/create-history');
+
+const { routerFactory } = require('./infra/api/router');
 
 const application = async () => {
   try {
@@ -41,15 +46,16 @@ const application = async () => {
     const { app } = await startApi();
 
     const { apiRouter } = routerFactory({
-      createUserRoute,
-      loginUserRoute,
       requestAuthenticationMiddleware,
       requestValidationMiddleware,
+      createUserRoute,
+      loginUserRoute,
     });
 
     apiRouter({ app });
   } catch (applicationError) {
     console.log(applicationError);
+    throw new Error('Erro na aplicação');
   }
 };
 

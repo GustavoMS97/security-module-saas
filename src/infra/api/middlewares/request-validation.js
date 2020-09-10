@@ -11,6 +11,9 @@ exports.requestValidationMiddlewareFactory = ({ ENV, User, createHistory } = {})
   return {
     requestValidationMiddleware: (req, res, next) => {
       const id = req.data.id;
+      if (!id) {
+        return res.status(401).send({ error: 'No user identified' });
+      }
       getUserPermissions({ id })
         .then(({ permissions, user }) => {
           const hasSuperPermission = permissions.filter(({ path }) => path.includes('*'));
