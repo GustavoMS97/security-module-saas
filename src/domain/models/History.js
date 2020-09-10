@@ -6,6 +6,10 @@ exports.HistoryFactory = ({ mongooseConnection } = {}) => {
     path: { type: String, required: true },
     method: { type: String, required: true },
     accessedAt: { type: Date, required: true },
+    user: {
+      type: mongooseConnection.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   });
   const History = mongooseConnection.model('History', HistorySchema);
 

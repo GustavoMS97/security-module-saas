@@ -1,0 +1,1 @@
+exports.METHODS = ['*', 'POST', 'GET'];
