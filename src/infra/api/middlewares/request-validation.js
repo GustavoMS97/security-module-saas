@@ -16,8 +16,8 @@ exports.requestValidationMiddlewareFactory = ({ ENV, User, createHistory } = {})
       }
       getUserPermissions({ id })
         .then(({ permissions, user }) => {
-          const hasSuperPermission = permissions.filter(({ path }) => path.includes('*'));
           const { method, url } = req;
+          const hasSuperPermission = permissions.filter(({ path }) => path.includes('*'));
           if (Array.isArray(hasSuperPermission) && hasSuperPermission.length > 0) {
             createHistory({ path: url, method, accessedAt: new Date(), successful: true, user });
             return res.redirect(`${ENV.CLIENT_BASE_URL}${url}`);
