@@ -4,7 +4,7 @@
 exports.proxyRedirectMiddlewareFactory = ({ proxy } = {}) => {
   return {
     proxyRedirectMiddleware: (req, res, next) => {
-      proxy.web(req, res, { buffer: req.bodyStream }, next);
+      proxy.web(req, res, {}, next);
     },
   };
 };
