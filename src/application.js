@@ -61,7 +61,7 @@ const application = async () => {
 
     apiRouter({ app });
   } catch (applicationError) {
-    console.log(applicationError);
+    console.log({ ...applicationError });
     throw new Error('Erro na aplicação');
   }
 };
