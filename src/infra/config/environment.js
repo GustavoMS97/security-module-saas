@@ -29,6 +29,7 @@ exports.loadEnvironment = () => {
       CLIENT_BASE_URL: joi.string().uri().required(),
     })
     .required()
+    .options({ stripUnknown: true })
     .validate(rawEnvVars);
   if (envVarsValidationError) {
     throw envVarsValidationError;
