@@ -19,13 +19,18 @@ const { createUserRouteFactory } = require('./infra/api/routes/create-user');
 const { loginUserRouteFactory } = require('./infra/api/routes/login-user');
 
 const { routerFactory } = require('./infra/api/router');
+const { proxyFactory } = require('./infra/api/proxy');
+const { proxyRedirectMiddlewareFactory } = require('./infra/api/middlewares/proxy-redirect');
 
 const application = async () => {
   try {
     const { ENV } = loadEnvironment();
 
     const { startApi } = apiFactory({ ENV });
+    const { startProxy } = proxyFactory({ ENV });
     const { mongooseConnection } = await connectToMongoose({ ENV });
+
+    const { proxy } = startProxy();
 
     const { Permission } = PermissionFactory({ mongooseConnection });
     const { User } = UserFactory({ mongooseConnection });
@@ -35,6 +40,7 @@ const application = async () => {
 
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory({ ENV });
     const { requestValidationMiddleware } = requestValidationMiddlewareFactory({ ENV, createHistory, User });
+    const { proxyRedirectMiddleware } = proxyRedirectMiddlewareFactory({ proxy });
 
     const { createUserWithPermissions } = createUserWithPermissionsFactory({ User, Permission });
     const { createTokenForUser } = createTokenForUserFactory({ ENV });
@@ -48,6 +54,7 @@ const application = async () => {
     const { apiRouter } = routerFactory({
       requestAuthenticationMiddleware,
       requestValidationMiddleware,
+      proxyRedirectMiddleware,
       createUserRoute,
       loginUserRoute,
     });

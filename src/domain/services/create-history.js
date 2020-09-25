@@ -1,10 +1,9 @@
 exports.createHistoryFactory = ({ History } = {}) => {
   return {
-    createHistory: async ({ path, method, accessedAt, successful, user } = {}) => {
+    createHistory: async ({ path, accessedAt, successful, user } = {}) => {
       try {
         await History.create({
           path,
-          method,
           accessedAt,
           successful,
           user,

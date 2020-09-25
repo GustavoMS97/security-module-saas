@@ -8,9 +8,11 @@ const ENV_MODE = Object.freeze({
 });
 
 exports.loadEnvironment = () => {
-  const { parsed: rawEnvVars, error: envVarsLoadError } = env.config();
+  let { parsed: rawEnvVars, error: envVarsLoadError } = env.config();
   if (envVarsLoadError) {
-    throw envVarsLoadError;
+    console.log(envVarsLoadError);
+    console.log('Não foi possível carregar as variaveis de ambiente pelo arquivo, carregando do sistema!');
+    rawEnvVars = process.env;
   }
 
   const { value: envVars, error: envVarsValidationError } = joi
@@ -20,8 +22,7 @@ exports.loadEnvironment = () => {
         .string()
         .default(ENV_MODE.DEVELOPMENT)
         .valid(...Object.values(ENV_MODE)),
-      API_SERVER_PORT: joi.number().port().required(),
-      API_SECRET_KEY: joi.string().required(),
+      PORT: joi.number().port().required(),
       MONGO_DB_URL: joi.string().required(),
       AUTH_SECRET: joi.string().required(),
       TOKEN_EXPIRATION: joi.number().required(),

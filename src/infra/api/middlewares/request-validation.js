@@ -20,15 +20,14 @@ exports.requestValidationMiddlewareFactory = ({ ENV, User, createHistory } = {})
           const hasSuperPermission = permissions.filter(({ path }) => path.includes('*'));
           if (Array.isArray(hasSuperPermission) && hasSuperPermission.length > 0) {
             createHistory({ path: url, method, accessedAt: new Date(), successful: true, user });
-            return res.redirect(`${ENV.CLIENT_BASE_URL}${url}`);
+            return next();
           }
           const filteredUrl = permissions.filter(({ path }) => url.includes(path));
           if (Array.isArray(filteredUrl) && filteredUrl.length > 0) {
-            createHistory({ path: url, method, accessedAt: new Date(), successful: true, user });
-            return res.redirect(`${ENV.CLIENT_BASE_URL}${url}`);
-          } else {
-            createHistory({ path: url, method, accessedAt: new Date(), successful: false, user });
+            createHistory({ path: url, accessedAt: new Date(), successful: true, user });
+            return next();
           }
+          createHistory({ path: url, accessedAt: new Date(), successful: false, user });
           return res.status(401).send({ error: 'No permissions identified' });
         })
         .catch((validationError) => {

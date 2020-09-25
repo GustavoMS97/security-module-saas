@@ -3,6 +3,7 @@
 exports.routerFactory = ({
   requestAuthenticationMiddleware,
   requestValidationMiddleware,
+  proxyRedirectMiddleware,
   createUserRoute,
   loginUserRoute,
 } = {}) => {
@@ -15,6 +16,7 @@ exports.routerFactory = ({
       app.post('/user/login', loginUserRoute);
       app.use(requestAuthenticationMiddleware);
       app.use(requestValidationMiddleware);
+      app.use(proxyRedirectMiddleware);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
