@@ -20,7 +20,7 @@ exports.loginUserRouteFactory = ({ loginUserWithEmailAndPassword } = {}) => {
         if (token) {
           return res.status(200).send({ token: `Bearer ${token}` });
         }
-        return res.status(401).send({ error: 'Now allowed' });
+        return res.status(401).send({ error: 'Not allowed' });
       } catch (loginUserApiError) {
         console.log(loginUserApiError);
         next(loginUserApiError);

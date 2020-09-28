@@ -5,6 +5,9 @@ exports.proxyFactory = ({ ENV } = {}) => {
     startProxy: () => {
       const proxyServer = Proxy.createProxyServer({
         target: ENV.CLIENT_BASE_URL,
+        changeOrigin: true,
+        xfwd: true,
+        proxyTimeou: 10 * 1000,
       });
       proxyServer.on('proxyReq', (proxyReq, req, res) => {
         try {
