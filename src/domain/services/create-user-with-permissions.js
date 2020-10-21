@@ -11,7 +11,8 @@ exports.createUserWithPermissionsFactory = ({ User, Permission } = {}) => {
             createdPermissions.push(createdPermission);
           }
           userToCreate = { ...userToCreate, permissions: createdPermissions };
-        } else if (is_client) {
+        }
+        if (is_client) {
           const createdPermission = await Permission.create({ path: '*' });
           userToCreate = { ...userToCreate, is_client, permissions: [createdPermission] };
         }
