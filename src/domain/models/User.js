@@ -11,6 +11,10 @@ exports.UserFactory = ({ mongooseConnection } = {}) => {
         ref: 'Permission',
       },
     ],
+    is_client: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

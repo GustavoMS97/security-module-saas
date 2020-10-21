@@ -16,9 +16,9 @@ exports.loginUserRouteFactory = ({ loginUserWithEmailAndPassword } = {}) => {
           throw envVarsValidationError;
         }
         const { login, password } = reqBodyValues;
-        const { token } = await loginUserWithEmailAndPassword({ login, password });
+        const { token, is_client } = await loginUserWithEmailAndPassword({ login, password });
         if (token) {
-          return res.status(200).send({ token: `Bearer ${token}` });
+          return res.status(200).send({ token: `Bearer ${token}`, is_client });
         }
         return res.status(401).send({ error: 'Not allowed' });
       } catch (loginUserApiError) {

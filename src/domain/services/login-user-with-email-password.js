@@ -5,7 +5,7 @@ exports.loginUserWithEmailAndPasswordFactory = ({ User, createTokenForUser } = {
         const user = await User.findOne({ login, password });
         if (user) {
           const { token } = await createTokenForUser({ id: user._id });
-          return { token };
+          return { token, is_client: !!user.is_client };
         }
         return false;
       } catch (loginUserError) {

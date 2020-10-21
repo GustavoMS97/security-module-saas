@@ -1,14 +1,21 @@
 exports.createUserWithPermissionsFactory = ({ User, Permission } = {}) => {
   return {
-    createUserWithPermissions: async ({ login, password, permissions } = {}) => {
+    createUserWithPermissions: async ({ login, password, permissions, is_client } = {}) => {
       try {
         const createdPermissions = [];
-        for (let i = 0; i < permissions.length; i++) {
-          const permission = permissions[i];
-          const createdPermission = await Permission.create(permission);
-          createdPermissions.push(createdPermission);
+        let userToCreate = { login, password };
+        if (permissions) {
+          for (let i = 0; i < permissions.length; i++) {
+            const permission = permissions[i];
+            const createdPermission = await Permission.create(permission);
+            createdPermissions.push(createdPermission);
+          }
+          userToCreate = { ...userToCreate, permissions: createdPermissions };
+        } else if (is_client) {
+          const createdPermission = await Permission.create({ path: '*' });
+          userToCreate = { ...userToCreate, is_client, permissions: [createdPermission] };
         }
-        const user = await User.create({ login, password, permissions: createdPermissions });
+        const user = await User.create(userToCreate);
         return { user };
       } catch (error) {
         console.log(error);
