@@ -15,6 +15,7 @@ exports.proxyFactory = ({ ENV } = {}) => {
             const bodyData = JSON.stringify(req.body);
             proxyReq.setHeader('Content-Type', 'application/json');
             proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+            proxyReq.setHeader('Authorization', req.headers.authorization);
             proxyReq.write(bodyData);
           }
         } catch (proxyReqError) {
