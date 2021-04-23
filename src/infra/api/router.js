@@ -17,9 +17,7 @@ exports.routerFactory = ({
 
       app.post('/testefb', async (req, res, next) => {
         try {
-          console.log(req.headers.facebookexternalua);
-          console.log(req.cookies);
-          console.log(req.params);
+          console.log(req.signed_request);
           return res.status(200).send();
         } catch (testefbError) {
           console.log('testefbError:', testefbError);
