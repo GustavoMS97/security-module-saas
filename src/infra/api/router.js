@@ -14,6 +14,16 @@ exports.routerFactory = ({
     apiRouter: ({ app }) => {
       app.post('/user', createUserRoute);
       app.post('/user/login', loginUserRoute);
+
+      app.post('/testefb', async (req, res, next) => {
+        try {
+          console.log(req.body);
+          console.log(req.headers);
+        } catch (testefbError) {
+          console.log('testefbError:', testefbError);
+        }
+      });
+
       app.use(requestAuthenticationMiddleware);
       app.use(requestValidationMiddleware);
       app.use(proxyRedirectMiddleware);
