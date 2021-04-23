@@ -17,7 +17,7 @@ exports.routerFactory = ({
 
       app.post('/testefb', async (req, res, next) => {
         try {
-          console.log(req);
+          console.log(req.signedCookies);
           return res.status(200).send();
         } catch (testefbError) {
           console.log('testefbError:', testefbError);
