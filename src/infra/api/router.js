@@ -19,6 +19,7 @@ exports.routerFactory = ({
         try {
           console.log(req.body);
           console.log(req.headers);
+          return res.status(200).send();
         } catch (testefbError) {
           console.log('testefbError:', testefbError);
         }
